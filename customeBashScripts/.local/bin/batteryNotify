@@ -1,0 +1,51 @@
+#!/usr/bin/env fish
+
+set battery /sys/class/power_supply/BAT0
+
+set notified_50 false
+set notified_20 false
+set notified_10 false
+set notified_5 false
+set notified_full false
+
+while true
+    set capacity (cat "$battery/capacity")
+    set bat_state (cat "$battery/status") # Renamed to avoid reserved Fish variable
+
+    if test "$bat_state" = Discharging
+        set notified_full false
+
+        if test "$capacity" -le 5; and test "$notified_5" = false
+            notify-send -u critical "Battery Critical" "5% remaining. Shutdown imminent!"
+            set notified_5 true
+            set notified_10 true
+            set notified_20 true
+            set notified_50 true
+        else if test "$capacity" -le 10; and test "$notified_10" = false
+            notify-send -u critical "Battery Very Low" "10% remaining."
+            set notified_10 true
+            set notified_20 true
+            set notified_50 true
+        else if test "$capacity" -le 20; and test "$notified_20" = false
+            notify-send -u critical "Battery Low" "20% remaining."
+            set notified_20 true
+            set notified_50 true
+        else if test "$capacity" -le 50; and test "$notified_50" = false
+            notify-send -u normal "Battery Halfway" "50% remaining."
+            set notified_50 true
+        end
+
+    else
+        set notified_50 false
+        set notified_20 false
+        set notified_10 false
+        set notified_5 false
+
+        if test "$capacity" -ge 100; and test "$notified_full" = false
+            notify-send -u normal "Battery Full" "100% charged."
+            set notified_full true
+        end
+    end
+
+    sleep 60
+end

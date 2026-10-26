@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+echo "🚀 Benchmarking and updating Pacman mirrors (India/Singapore)..."
+
+# Run reflector to get the fastest secure mirrors
+sudo reflector --country India,Singapore --protocol https --latest 10 --sort rate --save /etc/pacman.d/mirrorlist
+
+echo "✅ Mirrors updated! Syncing package databases..."
+
+# Force a sync with the new mirrors using yay
+yay -Syy
+
+echo "🎉 All done. Your cache is ready."

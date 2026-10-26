@@ -1,0 +1,84 @@
+/* Pywal16 Template for SwayNC */
+@define-color background {background};
+@define-color foreground {foreground};
+@define-color color0 {color0};
+@define-color color1 {color1};
+@define-color color2 {color2};
+@define-color color3 {color3};
+@define-color color4 {color4};
+@define-color color5 {color5};
+@define-color color6 {color6};
+@define-color color7 {color7};
+@define-color color8 {color8};
+@define-color color9 {color9};
+@define-color color10 {color10};
+@define-color color11 {color11};
+@define-color color12 {color12};
+@define-color color13 {color13};
+@define-color color14 {color14};
+@define-color color15 {color15};
+
+/* Derived UI Colors */
+@define-color cc-bg alpha(@background, 0.85);
+@define-color noti-bg alpha(@color0, 0.9);
+@define-color noti-border-color @color4;
+@define-color noti-bg-hover alpha(@color8, 0.4);
+@define-color noti-bg-focus alpha(@color4, 0.3);
+@define-color text-color @foreground;
+@define-color text-color-disabled @color8;
+@define-color bg-selected @color4;
+
+/* Global Styles */
+* {
+  font-family: monospace;
+  font-size: 13px;
+  background-color: transparent;
+  color: @text-color;
+}
+
+/* Control Center */
+.control-center {
+  background: @cc-bg;
+  border-radius: 16px;
+  border: 2px solid @noti-border-color;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 12px;
+}
+
+/* Notifications Background */
+.notification-row .notification-background {
+  background: @noti-bg;
+  border: 1px solid @noti-border-color;
+  border-radius: 12px;
+  margin: 6px 12px;
+  padding: 8px;
+}
+
+.notification-row .notification-background .notification.critical {
+  border-color: @color1;
+}
+
+/* Action Buttons */
+.notification-action {
+  background: @color2;
+  color: @background;
+  border-radius: 8px;
+  margin: 4px;
+  padding: 6px;
+}
+
+.notification-action:hover {
+  background: @color3;
+}
+
+/* Clear All Button */
+.widget-title button {
+  background: @color4;
+  color: @background;
+  border-radius: 8px;
+  padding: 4px 8px;
+}
+
+.widget-title button:hover {
+  background: @color5;
+}

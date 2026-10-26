@@ -1,0 +1,6 @@
+#!/usr/bin/env fish
+while true
+    clear
+    toilet -f future -F border -w 1000 "break time" | lolcat -a -d 3
+    sleep 1
+end

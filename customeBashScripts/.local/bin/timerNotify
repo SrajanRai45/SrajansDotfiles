@@ -1,0 +1,40 @@
+#!/usr/bin/env fish
+
+argparse 'm/minutes=' h/help 's/seconds=' -- $argv
+or exit 1
+
+function help
+    echo "Usage: use timerNotify --minutes <number>"
+    echo "Example: use timerNotify --minutes 5"
+    exit 0
+end
+
+if set -q _flag_h
+    help
+end
+
+if not set -q _flag_m; and not set -q _flag_s
+    echo "need --minutes or --seconds"
+end
+
+function onNormalMode
+    sleep $argv[1]
+    notify-send -u critical "Timer Finished!" "Your timer is complete."
+end
+
+function onMinuteMode
+    sleep (math "$argv[1] * 60")
+    notify-send -u critical "Timer Finished!" "Your timer is complete."
+end
+
+if set -q _flag_m
+    set minutes $_flag_minutes
+    onMinuteMode $minutes
+end
+
+if set -q _flag_s
+    set seconds $_flag_seconds
+    onNormalMode $seconds
+end
+
+exit 0

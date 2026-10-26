@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# Exit if arguments are missing
+if [ -z "$1" ] || [ -z "$2" ]; then
+  echo "Usage: create-webapp <AppName> <URL> [IconName]"
+  echo "Example: create-webapp YouTube https://youtube.com youtube"
+  exit 1
+fi
+
+APP_NAME="$1"
+APP_URL="$2"
+ICON="${3:-applications-internet}"
+
+# Format strings for files and rules
+SAFE_NAME=$(echo "$APP_NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g')
+# Extract domain (e.g., youtube.com) to predict the Wayland window class
+DOMAIN=$(echo "$APP_URL" | awk -F/ '{print $3}' | sed 's/www\.//')
+DATA_DIR="$HOME/.config/chromium-webapps/$SAFE_NAME"
+DESKTOP_FILE="$HOME/.local/share/applications/$SAFE_NAME-webapp.desktop"
+
+# Create isolated profile directory
+mkdir -p "$DATA_DIR"
+mkdir -p "$HOME/.local/share/applications"
+
+# Generate the .desktop file
+cat <<EOF >"$DESKTOP_FILE"
+[Desktop Entry]
+Name=$APP_NAME
+Exec=chromium --app="$APP_URL" --user-data-dir="$DATA_DIR" --ozone-platform-hint=auto --enable-features=VaapiVideoDecodeLinuxGL,WaylandWindowDecorations
+Type=Application
+Icon=$ICON
+Terminal=false
+Categories=Network;WebBrowser;
+EOF
+
+echo "✅ WebApp '$APP_NAME' created successfully!"
+echo "📂 Profile isolated at: $DATA_DIR"
+echo "🚀 Desktop entry saved to: $DESKTOP_FILE"
+echo ""
+echo "🎨 Add these rules to your Hyprland configuration:"
+echo "----------------------------------------------------"
+echo "# $APP_NAME WebApp Rules"
+echo "windowrulev2 = float, class:^(chromium-|chrome-)$DOMAIN(.*)\$"
+echo "windowrulev2 = size 1200 800, class:^(chromium-|chrome-)$DOMAIN(.*)\$"
+echo "windowrulev2 = center, class:^(chromium-|chrome-)$DOMAIN(.*)\$"
+echo "----------------------------------------------------"

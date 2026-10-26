@@ -1,0 +1,32 @@
+# ~/.config/ghostty/config
+
+# --- Shell Integration ---
+# Point directly to your Arch/CachyOS fish binary
+command = /usr/bin/fish
+
+# --- Transparency & Appearance ---
+# Set opacity between 0.0 (transparent) and 1.0 (opaque)
+background-opacity = 0.85
+
+# Enable Wayland-native background blur (works beautifully on modern compositors)
+background-blur-radius = 20
+
+# --- Typography ---
+# Essential if you are running Neovim with heavy UI plugins
+font-family = "JetBrainsMono Nerd Font"
+font-size = 12
+
+# --- Window Management ---
+# Disable client-side decorations (titlebars) for a cleaner look in tiling setups
+window-decoration = false
+
+# Add some breathing room around the edges of the terminal
+window-padding-x = 12
+window-padding-y = 12
+window-padding-balance = true
+
+
+# Add colors (Uncomment and point to your pywal color scheme or custom theme)
+# Example:
+# config-file = ~/.cache/wal/colors-ghostty
+# config-file = /path/to/your/wal/colors-ghostty
