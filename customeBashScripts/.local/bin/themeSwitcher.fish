@@ -1,6 +1,10 @@
 #!/usr/bin/env fish
 
+# Wallpaper directory (respects WALLPAPERS_DIR from .env, with fallback)
 set wall_dir "$HOME/Pictures/Wallpapers"
+if set -q WALLPAPERS_DIR; and test -n "$WALLPAPERS_DIR"
+    set wall_dir "$WALLPAPERS_DIR"
+end
 
 # Select wallpaper using fzf with a side preview panel via chafa
 set selected (find "$wall_dir" -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" -o -name "*.webp" \) | \

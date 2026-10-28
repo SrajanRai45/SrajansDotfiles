@@ -151,15 +151,51 @@ stow swaync
 
 ---
 
-## ⚙️ Path Customization & Overrides
+## ⚙️ Path Customization & Environment Variables
 
-Configs are sanitized and contain no hardcoded usernames. Example overrides you can enable:
+All configurations are sanitized with no hardcoded personal paths. You can configure private paths, private repositories, and machine-specific variables using a local `.env` file that is **automatically ignored by Git and never committed to the web**.
 
+### 1. Setting Up Your Local `.env`
+Copy the included template to `.env`:
+```sh
+cp .env.example .env
+```
+Open `.env` in your editor and configure your private paths:
+```sh
+# Paths to your private repositories / workspaces
+PRIVATE_REPO_DIR="$HOME/Repositories/private-repo"
+OBSIDIAN_VAULT_DIR="$HOME/Repositories/obsidian_notes_sync"
+
+# Custom directories
+WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
+SCREENSHOTS_DIR="$HOME/Pictures/Screenshots"
+```
+
+### 2. Using Variables Across Your Environment
+
+- **In Fish Shell (`fish`)**:
+  - Automatically loaded on shell start via [`fish/.config/fish/config.fish`](fish/.config/fish/config.fish#L1-L32).
+  - Access any variable as `$PRIVATE_REPO_DIR`, `$WALLPAPERS_DIR`, etc.
+  - To add private shell aliases or functions without committing them, create `~/.config/fish/config.local.fish` (ignored by Git).
+
+- **In Custom Bash Scripts (`customeBashScripts`)**:
+  - Source the environment loader helper at the top of your scripts:
+    ```bash
+    [ -f "$HOME/.local/bin/load-env.sh" ] && . "$HOME/.local/bin/load-env.sh"
+    cd "$PRIVATE_REPO_DIR"
+    ```
+  - Or in Fish scripts (like [`themeSwitcher.fish`](customeBashScripts/.local/bin/themeSwitcher.fish#L3-L7)), use `set -q WALLPAPERS_DIR` with a fallback.
+
+- **In Hyprland Compositor (`hyprland`)**:
+  - Modular Lua configs under [`hyprland/.config/hypr/conf/variables.lua`](hyprland/.config/hypr/conf/variables.lua#L18-L34) read environment variables via `os.getenv("PRIVATE_REPO_DIR")`.
+  - For machine-specific Hyprland binds or settings, create `hyprland/.config/hypr/conf/local.lua` (ignored by Git).
+
+### 3. Other Overrides
 - **Pywal Color Linking**:
   - In [`ghostty/.config/ghostty/config.ghostty`](ghostty/.config/ghostty/config.ghostty#L29-L33): uncomment `config-file = ~/.cache/wal/colors-ghostty`
   - In [`kitty/.config/kitty/kitty.conf`](kitty/.config/kitty/kitty.conf#L39-L43): uncomment `include ~/.cache/wal/colors-kitty.conf`
 - **Shell Tool Aliases**:
-  - In [`fish/.config/fish/config.fish`](fish/.config/fish/config.fish#L20-L45): uncomment aliases for tools you have installed (`eza`, `zellij`, `taskwarrior-tui`, `ryzenadj`).
+  - In [`fish/.config/fish/config.fish`](fish/.config/fish/config.fish): uncomment aliases for tools you have installed (`eza`, `zellij`, `taskwarrior-tui`, `ryzenadj`).
 
 ---
 

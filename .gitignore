@@ -9,6 +9,13 @@ git/.git-credentials
 .env.*
 !.env.example
 
+# Local user overrides & private configs (machine-specific)
+*.local.fish
+*.local.lua
+*.local.sh
+config.local.fish
+local.lua
+
 # Language server & IDE temporary configs
 .qmlls.ini
 .vscode/
